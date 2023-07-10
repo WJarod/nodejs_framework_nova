@@ -1,0 +1,107 @@
+
+# Génération de modèle avec CLI
+
+Ce projet fournit un moyen simple de générer un modèle Mongoose à l'aide de commandes CLI. Vous pouvez rapidement créer un modèle avec un schéma prédéfini et les opérations CRUD génériques.
+
+
+
+## Installation
+
+1 : Clonez le projet à partir du repository GitHub
+
+```bash
+  git clone <URL_DU_REPOSITORY>
+```
+
+2 : Accédez au répertoire du projet
+
+```bash
+  cd nom-du-projet
+```
+
+3 : Installez les dépendances
+
+```bash
+  npm install
+```
+
+4 : Clonez le projet à partir du repository GitHub
+
+```bash
+  npm install my-project
+  cd my-project
+```
+
+## Utilisation
+
+Pour générer un modèle avec les commandes CLI, suivez les étapes suivantes :
+
+1 : Exécutez la commande suivante
+
+```bash
+  npm run generate-model <nom_du_modèle>
+```
+
+Remplacez <nom_du_modèle> par le nom de votre modèle, en utilisant la casse appropriée.
+
+2 : Répondez aux questions posées pour définir les propriétés du modèle, y compris les types de données, les champs obligatoires, etc.
+
+3 : Une fois que vous avez répondu à toutes les questions, le modèle sera généré automatiquement dans le dossier models avec le nom <nom_du_modèle>.js.
+
+4 : Le modèle généré inclura un schéma Mongoose avec les propriétés définies, ainsi que les opérations CRUD génériques.
+
+5 : Vous pouvez maintenant utiliser le modèle généré dans vos routes et contrôleurs pour interagir avec votre base de données MongoDB.
+    
+## Exemple
+
+Supposons que vous souhaitiez générer un modèle pour une collection d'utilisateurs. Vous pouvez exécuter la commande suivante 
+
+```bash
+  npm run generate-model Product
+```
+
+Vous serez ensuite invité à répondre à des questions sur les propriétés du modèle, telles que le nom, le prix, etc. Une fois les questions terminées, le modèle Product sera généré dans le dossier models avec un schéma Mongoose et les opérations CRUD génériques.
+
+Une fois le modèle généré, vous pouvez utiliser les routes générées automatiquement pour interagir avec la collection de produits
+
+- Pour récupérer tous les produits, vous pouvez envoyer une requête GET à l'URL suivante
+
+```bash
+  GET /product
+```
+Cette route récupérera tous les produits de la base de données.
+
+- Pour récupérer un produit spécifique par son ID, vous pouvez envoyer une requête GET à l'URL suivante
+
+```bash
+  GET /product/:id
+```
+Remplacez :id par l'ID réel du produit que vous souhaitez récupérer.
+
+- Pour récupérer un produit spécifique par son ID, vous pouvez envoyer une requête GET à l'URL suivante
+
+```bash
+  GET /product/:id
+```
+Remplacez :id par l'ID réel du produit que vous souhaitez récupérer.
+
+- Vous pouvez également utiliser d'autres routes générées automatiquement pour effectuer des opérations CRUD sur les produits, notamment :
+
+- Route POST pour créer un nouveau produit
+
+```bash
+POST /products
+```
+- Route PUT pour mettre à jour un produit existant
+
+```bash
+PUT /products/:id
+```
+Remplacez :id par l'ID réel du produit que vous souhaitez mettre à jour.
+
+- Route DELETE pour supprimer un produit existant
+
+```bash
+DELETE /products/:id
+```
+Remplacez :id par l'ID réel du produit que vous souhaitez supprimer.
