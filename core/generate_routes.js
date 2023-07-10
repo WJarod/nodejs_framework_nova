@@ -9,7 +9,7 @@ const generate_routes = async () => {
     files.map(async (file) => {
       const model_name = file.split(".")[0];
       const model_uri = (await import(`../models/${model_name}.js`)).default;
-      const route = generic_routes(model_uri);
+      const route = generic_routes(model_uri, model_name);
       routes.push({ name: model_name.toLowerCase(), route });
     })
   );

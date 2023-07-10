@@ -1,9 +1,9 @@
 import express from "express";
 import controller from "../controller/controller.js";
 
-const router = (model) => {
+const router = (model, model_name) => {
   const Router = express.Router();
-  const Controller = controller(model);
+  const Controller = controller(model, model_name);
 
   Router.route("/").get(Controller.get).post(Controller.post);
 
