@@ -1,4 +1,3 @@
-
 # Génération de modèle avec CLI
 
 Ce projet fournit un moyen simple de générer un modèle Mongoose à l'aide de commandes CLI. Vous pouvez rapidement créer un modèle avec un schéma prédéfini et les opérations CRUD génériques.
