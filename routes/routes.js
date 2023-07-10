@@ -2,16 +2,17 @@ import express from "express";
 import controller from "../controller/controller.js";
 
 const router = (model) => {
-    const Router = express.Router();
-    const Controller = controller(model);
+  const Router = express.Router();
+  const Controller = controller(model);
 
-    Router.get("/", Controller.get);
-    Router.get("/:id", Controller.getOne);
-    Router.post("/", Controller.post);
-    Router.put("/:id", Controller.put);
-    Router.delete("/:id", Controller.delete);
+  Router.route("/").get(Controller.get).post(Controller.post);
 
-    return Router;
-}
+  Router.route("/:id")
+    .get(Controller.getOne)
+    .put(Controller.put)
+    .delete(Controller.delete);
+
+  return Router;
+};
 
 export default router;
