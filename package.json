@@ -1,11 +1,12 @@
 {
   "name": "frameworknova",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "generate-model": "node core/generate_model.js"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -13,7 +14,9 @@
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "inquirer": "^9.2.7",
     "mongoose": "^7.3.2",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "uuid": "^9.0.0"
   }
 }
