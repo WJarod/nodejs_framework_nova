@@ -1,6 +1,8 @@
+// Importation des modules nécessaires
 import inquirer from "inquirer";
 import fs from "fs/promises";
 
+// Définition des questions à poser à l'utilisateur
 const questions = [
   {
     type: "input",
@@ -19,6 +21,7 @@ const questions = [
   },
 ];
 
+// Fonction pour exécuter l'interface de ligne de commande
 async function runCLI() {
   const { modelName, fieldCount } = await inquirer.prompt(questions);
 

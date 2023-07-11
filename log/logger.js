@@ -1,13 +1,16 @@
+// Importation des modules nécessaires
 import fs from "fs";
 import chalk from "chalk";
 
+// Fonction pour écrire un message dans un fichier de logs
 export const logToFile = (message, isError = false) => {
+  // Préparation du message de log
   const logMessage = `${new Date().toISOString()} - ${message}\n`;
 
-  // Utiliser la couleur appropriée en fonction du type de message
+  // Détermination de la couleur du message en fonction du type de message
   const logColor = isError ? chalk.red : chalk.green;
 
-  // Écrire le message de log coloré dans le fichier
+  // Écriture du message de log coloré dans le fichier de logs
   fs.appendFile("server.log", logColor(logMessage), (err) => {
     if (err) {
       console.error("Erreur lors de l'écriture du log :", err);
