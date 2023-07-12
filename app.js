@@ -1,35 +1,28 @@
-// Importation des modules nécessaires
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { logToFile } from "./log/logger.js";
-
-// Importation du générateur de routes dynamiques
 import generate_routes from "./core/generate_routes.js";
 
-// Création de l'application Express
 const app = express();
-// Configuration dotenv pour gérer les variables d'environnement
 dotenv.config();
 
-// Ajout des middlewares pour la gestion du corps des requêtes HTTP et le CORS
+// Middleware pour la gestion du corps des requêtes HTTP et le CORS
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
-// Ajout d'une route simple pour tester le fonctionnement de l'API
+// Route de test
 app.get("/", (req, res) => {
   res.send("Bonjour à l'API REST !");
 });
 
-// Fonction pour démarrer le serveur
 async function startServer() {
   try {
     // Génération des routes en utilisant les modèles définis
     const routes = await generate_routes();
-    // Ajout des routes générées à l'application Express
     routes.forEach(({ name, route }) => {
       app.use(`/${name}`, route);
     });
@@ -53,5 +46,4 @@ async function startServer() {
   }
 }
 
-// Démarrage du serveur
 startServer();

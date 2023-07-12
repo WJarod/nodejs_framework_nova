@@ -1,31 +1,26 @@
-// Importation des modules nécessaires
 import fs from "fs";
 import generic_routes from "../routes/routes.js";
 
-// Fonction pour générer les routes en fonction des modèles définis
 const generate_routes = async () => {
-  // Création d'un tableau pour stocker les routes
   const routes = [];
-  // Lecture du répertoire des modèles
+  // Lire les fichiers du répertoire "models"
   const files = fs.readdirSync("./models");
 
-  // Boucle sur chaque fichier de modèle
   await Promise.all(
     files.map(async (file) => {
-      // Extraction du nom du modèle à partir du nom du fichier
+      // Extraire le nom du modèle à partir du nom du fichier
       const model_name = file.split(".")[0];
-      // Importation du modèle
+      // Importer le modèle
       const model_uri = (await import(`../models/${model_name}.js`)).default;
-      // Génération des routes pour le modèle
-      const route = generic_routes(model_uri, model_name);
-      // Ajout de la route au tableau des routes
+      // Générer les routes pour le modèle
+      const route = generic_routes(model_uri, model_name); 
+      // Ajouter les routes à la liste
       routes.push({ name: model_name.toLowerCase(), route });
     })
   );
 
-  // Retour des routes
-  return routes;
+  // Retourner la liste des routes générées pour chaque modèle
+  return routes; 
 };
 
-// Exportation de la fonction generate_routes
 export default generate_routes;
