@@ -1,18 +1,20 @@
 import express from "express";
-import bodyParser from "body-parser";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { logToFile } from "./log/logger.js";
 import generate_routes from "./core/generate_routes.js";
+import errorHandler from "./handler/errorHandler.js";
 
 const app = express();
 dotenv.config();
 
 // Middleware pour la gestion du corps des requêtes HTTP et le CORS
-app.use(bodyParser.json({ limit: "30mb", extended: true }));
-app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+app.use(express.json({ limit: "30mb" }));
+app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
+// Middleware pour la gestion des erreurs
+app.use(errorHandler);
 
 // Route de test
 app.get("/", (req, res) => {
@@ -28,8 +30,8 @@ async function startServer() {
     });
 
     // Connexion à la base de données MongoDB
-    const PORT = process.env.PORT;
-    const MONGO_URI = process.env.MONGO_URI;
+    const PORT = process.env.PORT || 5000;
+    const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017";
     await mongoose.connect(MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -41,8 +43,6 @@ async function startServer() {
     console.error(error.message);
     // Écriture de l'erreur dans un fichier de logs
     logToFile(`Erreur : ${error.message}`, true);
-    // En cas d'erreur, tentative de reconnexion toutes les 10 minutes
-    setTimeout(startServer, 600000); 
   }
 }
 

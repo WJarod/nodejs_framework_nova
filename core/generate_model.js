@@ -11,7 +11,8 @@ async function getExistingModels() {
 
 // Fonction pour exécuter l'interface de ligne de commande
 async function runCLI() {
-  const existingModels = await getExistingModels();
+  try {
+    const existingModels = await getExistingModels();
 
   const questions = [
     {
@@ -85,10 +86,14 @@ const ${modelName} = mongoose.model("${modelName}", ${modelName}Schema);
 export default ${modelName};
 `;
 
-  await fs.writeFile(`models/${modelName}.js`, modelContent);
+    await fs.writeFile(`models/${modelName}.js`, modelContent);
 
-  console.log(`Le modèle ${modelName} a été généré avec succès.`);
-  process.exit(0);
+    console.log(`Model ${modelName} has been generated successfully.`);
+  } catch (err) {
+    console.error(`Error generating model: ${err.message}`);
+  } finally {
+    process.exit(0);
+  }
 }
 
 runCLI();

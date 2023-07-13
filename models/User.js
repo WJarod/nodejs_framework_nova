@@ -24,6 +24,7 @@ UserSchema.pre("save", async function (next) {
     this.password = hashedPassword;
     next();
   } catch (error) {
+    console.error(`Error hashing password: ${error.message}`);
     next(error);
   }
 });
@@ -44,7 +45,7 @@ User.businessLogic = {
   findByAge: {
     route: "/findByAge/:age",
     method: "get",
-    handler: async (req, res) => {
+    handler: async (req, res, next) => {
       try {
         const users = await User.find({
           birth_date: {
@@ -52,44 +53,35 @@ User.businessLogic = {
             $gte: new Date(new Date().setFullYear(new Date().getFullYear() - req.params.age - 1))
           }
         });
-
-        logToFile(`findByAge: Recherche des utilisateurs par âge (${req.params.age})`, false);
         res.json(users);
       } catch (err) {
-        logToFile(`findByAge: Erreur - ${err.message}`, true);
-        res.status(500).json({ message: err.message });
+        next(err);
       }
     },
   },
   login: {
     route: "/login",
     method: "post",
-    handler: async (req, res) => {
+    handler: async (req, res, next) => {
       const { username, password } = req.body;
 
       try {
-        logToFile(`login: Tentative de connexion de l'utilisateur (${username})`, false);
-
         // Vérifier si l'utilisateur existe
         const user = await User.findOne({ username });
         if (!user) {
-          logToFile(`login: Nom d'utilisateur incorrect (${username})`, false);
-          return res.status(404).json({ message: "Nom d'utilisateur incorrect." });
+          return res.status(404).json({ message: "Incorrect username." });
         }
 
         // Vérifier si le mot de passe correspond
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
         if (!isPasswordCorrect) {
-          logToFile(`login: Mot de passe incorrect (${username})`, false);
-          return res.status(401).json({ message: "Mot de passe incorrect." });
+          return res.status(401).json({ message: "Incorrect password." });
         }
 
-        logToFile(`login: Connexion réussie pour l'utilisateur (${username})`, false);
         // Renvoyer les informations de l'utilisateur
         res.json(user);
       } catch (err) {
-        logToFile(`login: Erreur - ${err.message}`, true);
-        res.status(500).json({ message: err.message });
+        next(err);
       }
     },
   },
