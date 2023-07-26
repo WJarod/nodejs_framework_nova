@@ -31,8 +31,8 @@ async function startServer() {
 
     // Connexion à la base de données MongoDB
     const PORT = process.env.PORT || 5000;
-    const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017";
-    await mongoose.connect(MONGO_URI, {
+    const DATABASE_URL = process.env.DATABASE_URL || "mongodb://localhost:27017";
+    await mongoose.connect(DATABASE_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

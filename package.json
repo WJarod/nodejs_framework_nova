@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "nodemon app.js",
-    "generate-model": "node core/generate_model.js"
+    "generate-model": "node core/generate_model.js",
+    "init-project": "node core/init.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

@@ -32,7 +32,24 @@ Ce projet fournit un moyen simple de générer un modèle Mongoose à l'aide de 
 
 ## Utilisation :
 
-Pour utiliser ce script, exécutez simplement node run generateModel.js (ou le nom de votre fichier) dans votre terminal. Le script vous posera alors une série de questions pour déterminer comment le modèle doit être construit.
+### Génération d'un projet :
+
+- Pour utiliser ce script, exécutez simplement npm run init-project dans votre terminal. Le script vous posera alors une série de questions pour initialiser votre projet.
+
+```bash
+  npm run init-project
+```
+    
+
+## Questions :
+
+- "Quel est le port du projet ?" : Entrez ici le PORT souhaité pour votre projet.
+
+- "Quel est le nom de la base de données ?" : Entrez ici le nom de la base de données souhaité pour votre projet.
+
+### Génération d'un modèle :
+
+- Pour utiliser ce script, exécutez simplement run generate-model dans votre terminal. Le script vous posera alors une série de questions pour déterminer comment le modèle doit être construit.
 
 ```bash
   npm run generate-model
