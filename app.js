@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { logToFile } from "./log/logger.js";
 import generate_routes from "./core/generate_routes.js";
 import errorHandler from "./handler/errorHandler.js";
+import all_routes from "./core/get_routes.js";
 
 const app = express();
 dotenv.config();
@@ -31,14 +32,20 @@ async function startServer() {
 
     // Connexion à la base de données MongoDB
     const PORT = process.env.PORT || 5000;
-    const DATABASE_URL = process.env.DATABASE_URL || "mongodb://localhost:27017";
+    const DATABASE_URL =
+      process.env.DATABASE_URL || "mongodb://localhost:27017";
     await mongoose.connect(DATABASE_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    
+
     // Démarrage du serveur
-    app.listen(PORT, () => console.log(`Serveur en cours d'exécution sur le port : ${PORT}`));
+    app.listen(PORT, () => {
+      console.log(`Serveur en cours d'exécution sur le port : ${PORT}`); 
+      // Affichage des routes générées
+      console.log("Routes générées :");
+      all_routes(app);
+    });
   } catch (error) {
     console.error(error.message);
     // Écriture de l'erreur dans un fichier de logs
@@ -47,3 +54,5 @@ async function startServer() {
 }
 
 startServer();
+
+export default app;
