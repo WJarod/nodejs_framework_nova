@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
+import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
 import { spawn } from "child_process";
-
-const script = process.argv[2];
+import chalk from "chalk";
+import boxen from "boxen";
 
 const scripts = {
     start: "./app.js",
@@ -11,13 +13,70 @@ const scripts = {
     deploy: "./core/cli/CLI_deploy.js",
 };
 
-if (scripts[script]) {
-    const child = spawn("node", [scripts[script]], { stdio: "inherit" });
+const usage = boxen(
+    chalk.bold("Usage: nova <command> [options]"),
+    {
+        padding: 1,
+        margin: 1,
+        borderStyle: "round",
+        borderColor: "green",
+    }
+);
 
-    child.on("close", (code) => {
-        process.exit(code);
-    });
-} else {
-    console.log(`Unknown script "${script}".`);
-    process.exit(1);
-}
+yargs(hideBin(process.argv))
+    .usage(usage)
+    .command(
+        "start",
+        "Start the server",
+        () => {
+            const child = spawn("node", [scripts.start], { stdio: "inherit" });
+
+            child.on("close", (code) => {
+                process.exit(code);
+            });
+        }
+    )
+    .command(
+        "init",
+        "Initialize a new project",
+        () => {
+            const child = spawn("node", [scripts.init], { stdio: "inherit" });
+
+            child.on("close", (code) => {
+                process.exit(code);
+            });
+        }
+    )
+    .command(
+        "model",
+        "Generate a new model",
+        () => {
+            const child = spawn("node", [scripts.model], { stdio: "inherit" });
+
+            child.on("close", (code) => {
+                process.exit(code);
+            });
+        }
+    )
+    .command(
+        "deploy",
+        "Deploy the server",
+        () => {
+            const child = spawn("node", [scripts.deploy], { stdio: "inherit" });
+
+            child.on("close", (code) => {
+                process.exit(code);
+            });
+        }
+    )
+    .demandCommand(1, "")
+    .help(
+        "help",
+        "Show help"
+    )
+    .version(
+        "version",
+        "Show version number",
+        "0.0.1"
+    )
+    .argv;
