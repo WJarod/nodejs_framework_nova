@@ -2,10 +2,9 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { logToFile } from "./log/logger.js";
-import generate_routes from "./core/generate_routes.js";
-import errorHandler from "./handler/errorHandler.js";
-import all_routes from "./core/get_routes.js";
+import { logToFile } from "./core/app/log/logger.js";
+import gen_routes from "./core/app/APP_gen_routes.js";
+import errorHandler from "./core/app/handler/errorHandler.js";
 
 const app = express();
 dotenv.config();
@@ -25,7 +24,7 @@ app.get("/", (req, res) => {
 async function startServer() {
   try {
     // Génération des routes en utilisant les modèles définis
-    const routes = await generate_routes();
+    const routes = await gen_routes();
     routes.forEach(({ name, route }) => {
       app.use(`/${name}`, route);
     });
@@ -42,9 +41,6 @@ async function startServer() {
     // Démarrage du serveur
     app.listen(PORT, () => {
       console.log(`Serveur en cours d'exécution sur le port : ${PORT}`); 
-      // Affichage des routes générées
-      console.log("Routes générées :");
-      all_routes(app);
     });
   } catch (error) {
     console.error(error.message);

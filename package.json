@@ -6,11 +6,10 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js",
-    "generate-swagger": "node core/generate_swagger.js",
-    "generate-model": "node core/generate_model.js",
-    "get_routes": "node core/get_routes.js",
-    "init-project": "node core/init.js"
+    "dev": "nodemon app.js"
+  },
+  "bin": {
+    "nova": "./core/cli/CLI_nova.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

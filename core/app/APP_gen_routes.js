@@ -1,7 +1,7 @@
 import fs from "fs";
-import generic_routes from "../routes/routes.js";
+import generic_routes from "../../routes/routes.js";
 
-const generate_routes = async () => {
+const gen_routes = async () => {
   const routes = [];
   // Lire les fichiers du répertoire "models"
   const files = fs.readdirSync("./models");
@@ -12,7 +12,7 @@ const generate_routes = async () => {
         // Extraire le nom du modèle à partir du nom du fichier
         const model_name = file.split(".")[0];
         // Importer le modèle
-        const model_uri = (await import(`../models/${model_name}.js`)).default;
+        const model_uri = (await import(`../../models/${model_name}.js`)).default;
         // Générer les routes pour le modèle
         const route = generic_routes(model_uri, model_name); 
         // Ajouter les routes à la liste
@@ -27,4 +27,4 @@ const generate_routes = async () => {
   return routes; 
 };
 
-export default generate_routes;
+export default gen_routes;
