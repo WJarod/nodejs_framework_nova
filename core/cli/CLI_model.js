@@ -4,6 +4,7 @@ import fs from "fs/promises";
 import fsSync from "fs";
 import chalk from "chalk";
 import boxen from "boxen";
+import cliSelect from "cli-select";
 
 // Fonction pour obtenir les modèles existants
 async function getExistingModels() {
@@ -60,17 +61,10 @@ async function runCLI() {
                     message: `Nom du champ ${i + 1} :`,
                 },
                 {
-                    type: "input",
+                    type: "list",
                     name: "fieldType",
                     message: `Type du champ ${i + 1} :`,
-                    validate: function (value) {
-                        return (
-                            validTypes.includes(value) ||
-                            `Veuillez entrer un type de champ valide. Les types valides sont : ${validTypes.join(
-                                ", "
-                            )}`
-                        );
-                    },
+                    choices: validTypes
                 },
                 {
                     type: "confirm",
