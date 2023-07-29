@@ -9,7 +9,7 @@
     "dev": "nodemon app.js"
   },
   "bin": {
-    "nova": "./core/cli/CLI_nova_ui.js"
+    "nova": "./core/cli/CLI_nova.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

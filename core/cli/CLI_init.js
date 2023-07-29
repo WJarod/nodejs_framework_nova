@@ -1,6 +1,8 @@
 // Importation des modules nécessaires
 import inquirer from "inquirer";
 import fs from "fs/promises";
+import chalk from "chalk";
+import boxen from "boxen";
 
 // Fonction pour exécuter l'interface de ligne de commande
 async function runCLI() {
@@ -28,7 +30,16 @@ async function runCLI() {
 
         await fs.writeFile(".env", env);
 
-        console.log("Fichier .env créé avec succès !");
+        const message = chalk.bold("Fichier .env créé avec succès !");
+        const boxenOptions = {
+            padding: 1,
+            margin: 1,
+            borderStyle: "round",
+            borderColor: "green",
+        };
+        const msgBox = boxen(message, boxenOptions);
+
+        console.log(msgBox);
     } catch (error) {
         console.error(`Error while creating .env file : ${error}`);
     } finally {

@@ -2,6 +2,8 @@
 import inquirer from "inquirer";
 import fs from "fs/promises";
 import fsSync from "fs";
+import chalk from "chalk";
+import boxen from "boxen";
 
 // Fonction pour obtenir les modèles existants
 async function getExistingModels() {
@@ -108,7 +110,25 @@ export default ${modelName};
 
         await fs.writeFile(`models/${modelName}.js`, modelContent);
 
-        console.log(`Model ${modelName} has been generated successfully.`);
+        const modelConsoleView = `
+${chalk.bold("Modèle généré avec succès !")}
+${chalk.bold(`${modelName} {`)}
+${fields
+                .map((field) => {
+                    return `${field.fieldName} (${field.fieldType})${field.isRequired ? " (requis)" : ""
+                        }`;
+                })
+                .join("\n")}
+${chalk.bold(`}`)}
+`;
+        console.log(
+            boxen(modelConsoleView, {
+                padding: 1,
+                margin: 1,
+                borderStyle: "round",
+                borderColor: "green",
+            })
+        );
     } catch (err) {
         console.error(`Error generating model: ${err.message}`);
     } finally {

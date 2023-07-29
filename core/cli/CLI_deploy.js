@@ -2,6 +2,8 @@
 import inquirer from "inquirer";
 import fs from "fs/promises";
 import dotenv from "dotenv";
+import chalk from "chalk";
+import boxen from "boxen";
 
 // Fonction pour exécuter l'interface de ligne de commande
 async function runCLI() {
@@ -29,9 +31,18 @@ CMD [ "npm", "start" ]`;
             await fs.writeFile("Dockerfile", dockerfile);
         }
 
-       // await fs.rmdir("core/cli", { recursive: true });
+        // await fs.rmdir("core/cli", { recursive: true });
 
-        console.log("Le projet est prêt !");
+        const message = chalk.bold("Projet prêt !");
+        const boxenOptions = {
+            padding: 1,
+            margin: 1,
+            borderStyle: "round",
+            borderColor: "green",
+        };
+        const msgBox = boxen(message, boxenOptions);
+
+        console.log(msgBox);
 
     } catch (error) {
         console.error(`Error while creating Dockerfile : ${error}`);
