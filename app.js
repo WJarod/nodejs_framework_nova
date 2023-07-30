@@ -5,6 +5,8 @@ import gen_routes from "./core/app/APP_gen_routes.js";
 import errorHandler from "./core/app/handler/errorHandler.js";
 import log from "./core/app/log/logger.js";
 import bd_connect from "./core/app/APP_bd_connect.js";
+import path from "path";
+import getGeneratedRoutes from "./core/app/routes/GET_routes.js";
 
 const app = express();
 dotenv.config();
@@ -15,10 +17,14 @@ app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 // Middleware pour la gestion des erreurs
 app.use(errorHandler);
+// Middleware pour la gestion des vues
+app.set("views", path.join(path.resolve(), "./core/app/views"));
+app.set("view engine", "ejs");
 
-// Route de test
+// Route pour afficher les routes générées
 app.get("/", (req, res) => {
-  res.send("Bonjour à l'API REST !");
+  const generatedRoutesList = getGeneratedRoutes(app); // Obtenez la liste des routes générées
+  res.render("routes", { generatedRoutesList }); // Renvoyer la page HTML avec les données des routes générées
 });
 
 async function startServer() {

@@ -11,6 +11,7 @@ const scripts = {
     init: "./core/cli/CLI_init.js",
     model: "./core/cli/CLI_model.js",
     deploy: "./core/cli/CLI_deploy.js",
+    git: "./core/cli/CLI_git.js",
 };
 
 const usage = boxen(
@@ -64,6 +65,11 @@ yargs(hideBin(process.argv))
         "deploy",
         "Deploy the server",
         () => executeCommand("deploy")
+    )
+    .command(
+        "git",
+        "Execute git commands",
+        () => executeCommand("git")
     )
     .demandCommand(1, "Veuillez fournir une commande.")
     .help(
