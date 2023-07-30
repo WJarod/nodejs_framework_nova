@@ -40,18 +40,13 @@ async function runCLI() {
         const { message, branch, dev, push } = await inquirer.prompt(questions);
 
         // Supprimer les fichiers dans le dossier models sauf User.js si on est en développement
-        // Sipprimer le dossier test si on est en développement
         if (dev) {
             const files = await fs.readdir("./models");
-            const testFolderExists = await fs.stat("./test");
             try {
                 for (const file of files) {
                     if (file !== "User.js") {
                         await fs.unlink(`./models/${file}`);
                     }
-                }
-                if (testFolderExists) {
-                    await fs.rmdir("./test", { recursive: true });
                 }
                 console.log(
                     chalk.green(
@@ -64,6 +59,17 @@ async function runCLI() {
                     chalk.red(
                         `Erreur lors de la suppression des fichiers dans le dossier models : ${err}`
                     )
+                );
+                process.exit(1);
+            }
+            // Supprimer le dossier test si on est en développement
+            const testDirPath = "./test";
+            try {
+                await fs.rm(testDirPath, { recursive: true, force: true });
+                console.log(chalk.green(`Le dossier test a été supprimé avec succès.`));
+            } catch (err) {
+                console.error(
+                    chalk.red(`Erreur lors de la suppression du dossier test : ${err}`)
                 );
                 process.exit(1);
             }
