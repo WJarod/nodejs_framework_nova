@@ -13,7 +13,7 @@ Nova est un framework Node.js qui suit le modèle MVC (Model-View-Controller). I
   - [Commande deploy](#commande-deploy)
   - [Commande git](#commande-git)
 
-# Installation :
+# Installation
 
 - Clonez le projet à partir du repository GitHub
 
@@ -39,9 +39,9 @@ Nova est un framework Node.js qui suit le modèle MVC (Model-View-Controller). I
   npm link
 ```
 
-## Utilisation CLI :
+## Utilisation CLI
 
-#### Commande init :
+#### Commande init
 
 Cette commande initialise un nouveau projet. Elle vous posera des questions sur le port du projet et l'URL de la base de données. Ces informations seront utilisées pour créer le fichier .env.
 
@@ -49,7 +49,7 @@ Cette commande initialise un nouveau projet. Elle vous posera des questions sur 
   nova init
 ```
 
-#### Commande start :
+#### Commande start
 
 Cette commande démarre le serveur. Elle utilise le fichier .env pour récupérer les informations de connexion à la base de données et le port du serveur.
 
@@ -57,7 +57,7 @@ Cette commande démarre le serveur. Elle utilise le fichier .env pour récupére
   nova start
 ```
 
-#### Commande model :
+#### Commande model
 
 Cette commande génère un nouveau modèle. Elle vous posera des questions sur le nom du modèle, le nombre de champs que vous souhaitez ajouter au modèle, le nom de chaque champ, le type de chaque champ et si chaque champ est requis. Un nouveau fichier de modèle sera créé dans le dossier models avec les informations que vous avez fournies.
 
@@ -65,7 +65,7 @@ Cette commande génère un nouveau modèle. Elle vous posera des questions sur l
   nova model
 ```
 
-#### Commande deploy :
+#### Commande deploy
 
 Cette commande déploie le serveur. Si vous choisissez d'utiliser Docker, elle générera un fichier Dockerfile avec les informations de votre fichier .env.
 
@@ -73,7 +73,7 @@ Cette commande déploie le serveur. Si vous choisissez d'utiliser Docker, elle g
   nova deploy
 ```
 
-#### Commande git :
+#### Commande git
 
 Cette commande exécute des commandes git. Elle vous posera des questions sur le message du commit, la branche sur laquelle vous voulez pousser, si vous êtes en développement et si vous voulez pousser les modifications. Si vous êtes en développement, tous les fichiers dans le dossier models sauf User.js seront supprimés. Ensuite, elle exécutera les commandes git add et git commit avec le message que vous avez fourni. Si vous choisissez de pousser les modifications, elle exécutera également la commande git push.
 
