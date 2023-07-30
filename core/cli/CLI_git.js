@@ -1,13 +1,11 @@
 // Importation des modules nécessaires
 import inquirer from "inquirer";
-import fs from "fs/promises";
-import dotenv from "dotenv";
+import fs from "fs";
 import chalk from "chalk";
-import boxen from "boxen";
 import { spawn } from "child_process";
+
 // Fonction pour exécuter l'interface de ligne de commande
 async function runCLI() {
-    // git add . && git commit -m "custom message"
     try {
         const questions = [
             {
@@ -31,8 +29,17 @@ async function runCLI() {
 
         const command = `git add . && git commit -m "${message}"`;
 
+        // Supprimer les fichier dans le dossier models sauf User.js
+        const files = fs.readdirSync("./models");
+        files.forEach((file) => {
+            if (file !== "User.js") {
+                // Supprimer le fichier
+                fs.unlinkSync(`./models/${file}`);
+            }
+        });
+        
         // Exécuter la commande git add && git commit
-        const gitAddCommit = spawn("sh", ["-c", command], { stdio: "inherit" });
+        const gitAddCommit = spawn("sh", ["-c", command], { stdio: "ignore" });
 
         gitAddCommit.on("close", (code) => {
             if (code === 0) {
@@ -57,11 +64,11 @@ async function runCLI() {
                 process.exit(code);
             }
         });
-       
+
     } catch (error) {
         console.error(chalk.red(`Erreur lors de l'exécution de la commande : ${error}`));
         process.exit(1);
-    }  finally {
+    } finally {
         process.exit(0);
     }
 }
