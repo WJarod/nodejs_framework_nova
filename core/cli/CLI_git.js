@@ -44,26 +44,26 @@ async function runCLI() {
         gitAddCommit.on("close", (code) => {
             if (code === 0) {
                 console.log(chalk.green(`La commande git add && git commit s'est terminée avec succès.`));
-
-                // Vérifier si on veut effectuer un git push
-                if (push) {
-                    const gitPush = spawn("git", ["push", "-u", "origin", "main"], { stdio: "inherit" });
-                    gitPush.on("close", (code) => {
-                        if (code === 0) {
-                            console.log(chalk.green("Git push effectué avec succès."));
-                        } else {
-                            console.error(chalk.red(`Le git push a échoué avec le code de sortie ${code}.`));
-                        }
-                        process.exit(code);
-                    });
-                } else {
-                    process.exit(0);
-                }
             } else {
                 console.error(chalk.red(`La commande git add && git commit a échoué avec le code de sortie ${code}.`));
                 process.exit(code);
             }
         });
+
+        // Vérifier si on veut effectuer un git push
+        if (push) {
+            const gitPush = spawn("git", ["push", "-u", "origin", "main"], { stdio: "inherit" });
+            gitPush.on("close", (code) => {
+                if (code === 0) {
+                    console.log(chalk.green("Git push effectué avec succès."));
+                } else {
+                    console.error(chalk.red(`Le git push a échoué avec le code de sortie ${code}.`));
+                }
+                process.exit(code);
+            });
+        } else {
+            process.exit(0);
+        }
 
     } catch (error) {
         console.error(chalk.red(`Erreur lors de l'exécution de la commande : ${error}`));
