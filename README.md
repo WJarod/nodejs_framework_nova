@@ -1,9 +1,19 @@
 
-# Génération de modèle avec CLI
+# Nova Framework
 
-Ce projet fournit un moyen simple de générer un modèle Mongoose à l'aide de commandes CLI. Vous pouvez rapidement créer un modèle avec un schéma prédéfini et les opérations CRUD génériques.
+Nova est un framework Node.js qui suit le modèle MVC (Model-View-Controller). Il est conçu pour faciliter la création et la gestion d'une application Node.js, avec des utilitaires intégrés pour des tâches courantes comme la connexion à la base de données, la génération de routes, la gestion des erreurs et la journalisation. Il fournit également une interface en ligne de commande (CLI) pour une gestion plus facile de l'application.
 
-## Installation :
+## Table des matières
+
+- [Installation](#installation)
+- [Utilisation CLI](#utilisation-cli)
+  - [Commande init](#commande-init)
+  - [Commande start](#commande-start)
+  - [Commande model](#commande-model)
+  - [Commande deploy](#commande-deploy)
+  - [Commande git](#commande-git)
+
+# Installation :
 
 - Clonez le projet à partir du repository GitHub
 
@@ -23,201 +33,50 @@ Ce projet fournit un moyen simple de générer un modèle Mongoose à l'aide de 
   npm install
 ```
 
-- Clonez le projet à partir du repository GitHub
+- Liez le package localement pour utiliser les commandes CLI de Nova
 
 ```bash
-  npm install my-project
-  cd my-project
+  npm link
 ```
 
-## Utilisation :
+## Utilisation CLI :
 
-#### - Génération d'un projet :
+#### Commande init :
 
-- Pour utiliser ce script, exécutez simplement npm run init-project dans votre terminal. Le script vous posera alors une série de questions pour initialiser votre projet.
+Cette commande initialise un nouveau projet. Elle vous posera des questions sur le port du projet et l'URL de la base de données. Ces informations seront utilisées pour créer le fichier .env.
 
 ```bash
-  npm run init-project
+  nova init
 ```
-    
 
-## Questions :
+#### Commande start :
 
-- "Quel est le port du projet ?" : Entrez ici le PORT souhaité pour votre projet.
-
-- "Quel est le nom de la base de données ?" : Entrez ici l'url de la base de données MongoDB.
-
-#### - Génération d'un modèle :
-
-- Pour utiliser ce script, exécutez simplement run generate-model dans votre terminal. Le script vous posera alors une série de questions pour déterminer comment le modèle doit être construit.
+Cette commande démarre le serveur. Elle utilise le fichier .env pour récupérer les informations de connexion à la base de données et le port du serveur.
 
 ```bash
-  npm run generate-model
-```
-    
-## Questions :
-
-- "Quel est le nom du modèle Mongoose ?" : Entrez ici le nom de votre modèle. Cela déterminera le nom du fichier qui sera généré et le nom de la classe Mongoose.
-
-- "Combien de champs souhaitez-vous ajouter au modèle ?" : Entrez ici le nombre de champs que vous souhaitez pour votre modèle. Vous serez ensuite interrogé pour chaque champ.
-
-### Pour chaque champ :
-
-- "Nom du champ X:" : Entrez ici le nom du champ.
-
-- "Type du champ X:" : Ici, vous devez entrer le type du champ. Les types de champs valides sont "String", "Number", "Date", "Boolean", "[String]", "[Number]", "[Date]", "[Boolean]", "Schema.Types.ObjectId", "[Schema.Types.ObjectId]", et tout autre nom de modèle existant dans votre dossier de modèles.
-
-- "Ce champ est-il requis ?" : Répondez par oui ou non pour indiquer si le champ est obligatoire.
-
-## Modèles existants : 
-
-Si vous saisissez le nom d'un modèle existant comme type de champ, une référence à ce modèle sera créée. Cela signifie que la valeur du champ doit être un identifiant d'un document du modèle de référence.
-
-Par exemple, si vous avez un modèle User et que vous créez un nouveau modèle avec un champ de type User, la valeur de ce champ doit être l'identifiant d'un document User.
-
-## Fichier généré : 
-
-Une fois que vous avez répondu à toutes les questions, le script générera un fichier .js dans le dossier models avec le nom du modèle que vous avez saisi. Ce fichier contiendra un modèle Mongoose avec les champs que vous avez définis.
-
-Par exemple, si vous créez un modèle Book avec un champ title de type String, le script générera un fichier Book.js avec le contenu suivant :
-
-```javascript
-import mongoose from "mongoose";
-
-const BookSchema = new mongoose.Schema({
-  title: { type: String, required: false }
-});
-
-const Book = mongoose.model("Book", BookSchema);
-
-export default Book;
+  nova start
 ```
 
-Après la génération, vous pouvez utiliser ce modèle dans votre application comme n'importe quel autre modèle Mongoose.
+#### Commande model :
 
-## Ajout de la logique métier dans un modèle Mongoose : 
+Cette commande génère un nouveau modèle. Elle vous posera des questions sur le nom du modèle, le nombre de champs que vous souhaitez ajouter au modèle, le nom de chaque champ, le type de chaque champ et si chaque champ est requis. Un nouveau fichier de modèle sera créé dans le dossier models avec les informations que vous avez fournies.
 
-Il est possible d'ajouter de la logique métier dans un modèle Mongoose. Ceci est utile lorsque vous voulez effectuer certaines opérations avant ou après certaines actions sur le modèle, comme la sauvegarde d'un document.
-
-Voici comment cela fonctionne avec un exemple de modèle User:
-
-```javascript
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
-import { logToFile } from "../log/logger.js";
-
-const UserSchema = new mongoose.Schema({
-  first_name: { type: String, required: true },
-  last_name: { type: String, required: false },
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true },
-  password: { type: String, required: true },
-  birth_date: { type: Date, required: false },
-  created_at: { type: Date, default: Date.now },
-});
+```bash
+  nova model
 ```
 
-### Méthodes middleware : 
+#### Commande deploy :
 
-Mongoose vous permet d'ajouter des fonctions middleware qui sont appelées à certains moments du cycle de vie d'un document. Par exemple, vous pouvez ajouter une fonction qui sera exécutée avant la sauvegarde (pre-save) d'un document :
+Cette commande déploie le serveur. Si vous choisissez d'utiliser Docker, elle générera un fichier Dockerfile avec les informations de votre fichier .env.
 
-```javascript
-UserSchema.pre("save", async function (next) {
-  try {
-    if (!this.isModified("password")) {
-      return next();
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(this.password, salt);
-    this.password = hashedPassword;
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
+```bash
+  nova deploy
 ```
 
-Dans cet exemple, avant la sauvegarde d'un utilisateur, le mot de passe est haché avec bcrypt.
+#### Commande git :
 
-### Méthodes d'instance :
+Cette commande exécute des commandes git. Elle vous posera des questions sur le message du commit, la branche sur laquelle vous voulez pousser, si vous êtes en développement et si vous voulez pousser les modifications. Si vous êtes en développement, tous les fichiers dans le dossier models sauf User.js seront supprimés. Ensuite, elle exécutera les commandes git add et git commit avec le message que vous avez fourni. Si vous choisissez de pousser les modifications, elle exécutera également la commande git push.
 
-Vous pouvez également ajouter des méthodes d'instance à votre schéma. Ces méthodes seront disponibles sur tous les documents de ce modèle. Par exemple, vous pouvez ajouter une méthode pour comparer un mot de passe donné avec le mot de passe haché :
-
-```javascript
-UserSchema.methods.comparePassword = async function (password) {
-  try {
-    return await bcrypt.compare(password, this.password);
-  } catch (error) {
-    throw new Error(error);
-  }
-};
+```bash
+  nova git
 ```
-
-### Logique métier :
-
-Vous pouvez aussi attacher des fonctions de logique métier directement au modèle :
-
-```javascript
-User.businessLogic = {
-  findByAge: {
-    route: "/findByAge/:age",
-    method: "get",
-    handler: async (req, res) => {
-      try {
-        const users = await User.find({
-          birth_date: {
-            $lte: new Date(new Date().setFullYear(new Date().getFullYear() - req.params.age)),
-            $gte: new Date(new Date().setFullYear(new Date().getFullYear() - req.params.age - 1))
-          }
-        });
-
-        logToFile(`findByAge: Recherche des utilisateurs par âge (${req.params.age})`, false);
-        res.json(users);
-      } catch (err) {
-        logToFile(`findByAge: Erreur - ${err.message}`, true);
-        res.status(500).json({ message: err.message });
-      }
-    },
-  },
-  login: {
-    route: "/login",
-    method: "post",
-    handler: async (req, res) => {
-      const { username, password } = req.body;
-
-      try {
-        logToFile(`login: Tentative de connexion de l'utilisateur (${username})`, false);
-
-        // Vérifier si l'utilisateur existe
-        const user = await User.findOne({ username });
-        if (!user) {
-          logToFile(`login: Nom d'utilisateur incorrect (${username})`, false);
-          return res.status(404).json({ message: "Nom d'utilisateur incorrect." });
-        }
-
-        // Vérifier si le mot de passe correspond
-        const isPasswordCorrect = await bcrypt.compare(password, user.password);
-        if (!isPasswordCorrect) {
-          logToFile(`login: Mot de passe incorrect (${username})`, false);
-          return res.status(401).json({ message: "Mot de passe incorrect." });
-        }
-
-        logToFile(`login: Connexion réussie pour l'utilisateur (${username})`, false);
-        // Renvoyer les informations de l'utilisateur
-        res.json(user);
-      } catch (err) {
-        logToFile(`login: Erreur - ${err.message}`, true);
-        res.status(500).json({ message: err.message });
-      }
-    },
-  },
-  // Ajouter ici d'autres méthodes spécifiques à User
-};
-```
-
-Dans cet exemple, deux méthodes sont ajoutées : findByAge et login. Ces méthodes sont spécifiques à la logique métier de l'utilisateur et peuvent être appelées sur le modèle User.
-
-Notez que ces fonctions ne font pas partie intégrante du schéma Mongoose et ne sont pas directement liées au cycle de vie d'un document. Elles sont plutôt attachées au modèle après sa définition. Ces fonctions pourraient également être définies dans un autre module et importées si nécessaire.
-
-La logique métier que vous attachez au modèle dépend entièrement de vos besoins. Cela peut être aussi simple ou aussi complexe que nécessaire pour votre application.
