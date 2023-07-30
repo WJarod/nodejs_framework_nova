@@ -1,17 +1,30 @@
-import fs from "fs/promises";
-import chalk from "chalk";
+import pino from "pino";
+import dayjs from "dayjs";
+import pretty from 'pino-pretty'
 
-// Fonction pour écrire un message dans un fichier de logs
-export const logToFile = async (message, isError = false) => {
-  try {
-    // Préparation du message de log
-    const logMessage = `${new Date().toISOString()} - ${message}\n`;
-    // Détermination de la couleur du message en fonction du type de message
-    const logColor = isError ? chalk.red : chalk.green;
-    // Écriture du message de log coloré dans le fichier de logs
-    await fs.appendFile("server.log", logColor(logMessage));
-  } catch (err) {
-    console.error("Erreur lors de l'écriture du log :", err);
-    throw err;
-  }
-};
+const log = pino({
+  transport: {
+    targets: [
+      {
+        target: "pino-pretty",
+        options: {
+          colorize: true,
+          ignore: "pid,hostname"
+        },
+      },
+      {
+        target: "pino-pretty",
+        options: {
+          colorize: true,
+          ignore: "pid,hostname",
+          destination: "server.log",
+        },
+      }
+    ],
+
+  },
+  prettifier: pretty,
+  timestamp: () => `,"time":"${dayjs().format()}"`,
+});
+
+export default log;

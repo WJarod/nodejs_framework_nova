@@ -2,9 +2,10 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { logToFile } from "./core/app/log/logger.js";
 import gen_routes from "./core/app/APP_gen_routes.js";
 import errorHandler from "./core/app/handler/errorHandler.js";
+import succesHandler from "./core/app/handler/succesHandler.js";
+import log from "./core/app/log/logger.js";
 
 const app = express();
 dotenv.config();
@@ -40,12 +41,10 @@ async function startServer() {
 
     // Démarrage du serveur
     app.listen(PORT, () => {
-      console.log(`Serveur en cours d'exécution sur le port : ${PORT}`); 
+      log.info(`Serveur en cours d'exécution sur le port : ${PORT}`);
     });
   } catch (error) {
-    console.error(error.message);
-    // Écriture de l'erreur dans un fichier de logs
-    logToFile(`Erreur : ${error.message}`, true);
+    log.error(error);
   }
 }
 
