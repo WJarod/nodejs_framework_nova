@@ -44,7 +44,7 @@ async function runCLI() {
         gitAddCommit.on("close", (code) => {
             if (code === 0) {
                 console.log(chalk.green(`La commande git add && git commit s'est terminée avec succès.`));
-        
+
                 // Vérifier si on veut effectuer un git push
                 if (push) {
                     const gitPush = spawn("git", ["push", "-u", "origin", "main"], { stdio: "inherit" });
