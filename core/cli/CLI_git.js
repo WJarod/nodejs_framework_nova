@@ -2,7 +2,7 @@
 import inquirer from "inquirer";
 import fs from "fs/promises";
 import chalk from "chalk";
-import { spawn } from "child_process";
+import simpleGit from "simple-git";
 
 // Fonction pour exécuter l'interface de ligne de commande
 async function runCLI() {
@@ -27,8 +27,6 @@ async function runCLI() {
 
         const { message, push } = await inquirer.prompt(questions);
 
-        const command = `git add . && git commit -m "${message}"`;
-
         // Supprimer les fichiers dans le dossier models sauf User.js
         const files = await fs.readdir("./models");
         for (const file of files) {
@@ -39,36 +37,22 @@ async function runCLI() {
         }
 
         // Exécuter la commande git add && git commit
-        const gitAddCommit = spawn(command, { shell: true, stdio: "ignore" });
+        const git = simpleGit();
+        await git.add(".");
+        await git.commit(message);
 
-        gitAddCommit.on("close", async (code) => {
-            if (code === 0) {
-                console.log(chalk.green(`La commande git add && git commit s'est terminée avec succès.`));
+        console.log(chalk.green(`La commande git add && git commit s'est terminée avec succès.`));
 
-                // Vérifier si on veut effectuer un git push
-                if (push) {
-                    const gitPush = spawn("git", ["push", "-u", "origin", "main"], { stdio: "inherit" });
-                    gitPush.on("close", (code) => {
-                        if (code === 0) {
-                            console.log(chalk.green("Git push effectué avec succès."));
-                        } else {
-                            console.error(chalk.red(`Le git push a échoué avec le code de sortie ${code}.`));
-                        }
-                        process.exit(code);
-                    });
-                } else {
-                    process.exit(0);
-                }
-            } else {
-                console.error(chalk.red(`La commande git add && git commit a échoué avec le code de sortie ${code}.`));
-                process.exit(code);
-            }
-        });
+        // Vérifier si on veut effectuer un git push
+        if (push) {
+            await git.push("origin", "main");
+            console.log(chalk.green("Git push effectué avec succès."));
+        }
+
+        process.exit(0);
     } catch (error) {
         console.error(chalk.red(`Erreur lors de l'exécution de la commande : ${error}`));
         process.exit(1);
-    } finally {
-        process.exit(0);
     }
 }
 

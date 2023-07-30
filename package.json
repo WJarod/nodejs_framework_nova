@@ -27,6 +27,7 @@
     "path": "^0.12.7",
     "pino": "^8.14.2",
     "pino-pretty": "^10.2.0",
+    "simple-git": "^3.19.1",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
