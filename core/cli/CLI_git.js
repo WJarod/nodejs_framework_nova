@@ -42,11 +42,25 @@ async function runCLI() {
         // Supprimer les fichiers dans le dossier models sauf User.js si on est en développement
         if (dev) {
             const files = await fs.readdir("./models");
-            for (const file of files) {
-                if (file !== "User.js") {
-                    // Supprimer le fichier
-                    await fs.unlink(`./models/${file}`);
+            try {
+                for (const file of files) {
+                    if (file !== "User.js") {
+                        await fs.unlink(`./models/${file}`);
+                    }
                 }
+                console.log(
+                    chalk.green(
+                        `Les fichiers dans le dossier models ont été supprimés avec succès.`
+                    )
+                );
+            }
+            catch (err) {
+                console.error(
+                    chalk.red(
+                        `Erreur lors de la suppression des fichiers dans le dossier models : ${err}`
+                    )
+                );
+                process.exit(1);
             }
         }
 
@@ -64,7 +78,11 @@ async function runCLI() {
         // Vérifier si on veut effectuer un git push
         if (push) {
             await git.push("origin", branch);
-            console.log(chalk.green("Git push effectué avec succès."));
+            console.log(
+                chalk.green(
+                    `Le push sur la branche ${branch} s'est terminé avec succès.`
+                )
+            );
         }
 
         process.exit(0);
