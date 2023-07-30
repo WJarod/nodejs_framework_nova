@@ -3,6 +3,7 @@ import inquirer from "inquirer";
 import fs from "fs/promises";
 import chalk from "chalk";
 import simpleGit from "simple-git";
+import boxen from "boxen";
 
 // Fonction pour exécuter l'interface de ligne de commande
 async function runCLI() {
