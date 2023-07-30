@@ -40,17 +40,22 @@ async function runCLI() {
         const { message, branch, dev, push } = await inquirer.prompt(questions);
 
         // Supprimer les fichiers dans le dossier models sauf User.js si on est en développement
+        // Sipprimer le dossier test si on est en développement
         if (dev) {
             const files = await fs.readdir("./models");
+            const testFolderExists = await fs.stat("./test");
             try {
                 for (const file of files) {
                     if (file !== "User.js") {
                         await fs.unlink(`./models/${file}`);
                     }
                 }
+                if (testFolderExists) {
+                    await fs.rmdir("./test", { recursive: true });
+                }
                 console.log(
                     chalk.green(
-                        `Les fichiers dans le dossier models ont été supprimés avec succès.`
+                        `Les fichiers dans le dossier models et le dossier test ont été supprimés avec succès.`
                     )
                 );
             }
@@ -86,7 +91,7 @@ async function runCLI() {
         }
 
         const consoleMessage = chalk.bold("La commande git s'est terminée avec succès !");
-        
+
         const boxenOptions = {
             padding: 1,
             margin: 1,
