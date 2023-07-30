@@ -20,18 +20,10 @@ async function runCLI() {
         const { docker } = await inquirer.prompt(questions);
 
         if (docker) {
-            const dockerfile = `FROM node:14-alpine
-ENV DATABASE_URL=${process.env.DATABASE_URL}
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
-COPY . .
-EXPOSE ${process.env.PORT}
-CMD [ "npm", "start" ]`;
-            await fs.writeFile("Dockerfile", dockerfile);
+            const dockerfileContent = generateDockerfileContent();
+            await fs.writeFile("Dockerfile", dockerfileContent);
+            console.log(chalk.green("Le fichier Dockerfile a été créé avec succès."));
         }
-
-        // await fs.rmdir("core/cli", { recursive: true });
 
         const message = chalk.bold("Projet prêt !");
         const boxenOptions = {
@@ -41,15 +33,32 @@ CMD [ "npm", "start" ]`;
             borderColor: "green",
         };
         const msgBox = boxen(message, boxenOptions);
-
         console.log(msgBox);
 
     } catch (error) {
-        console.error(`Error while creating Dockerfile : ${error}`);
-    }
-    finally {
+        console.error(chalk.red(`Erreur lors de la création du Dockerfile : ${error}`));
+    } finally {
         process.exit(0);
     }
+}
+
+// Fonction pour générer le contenu du Dockerfile
+function generateDockerfileContent() {
+    const { DATABASE_URL, PORT } = process.env;
+
+    if (!DATABASE_URL || !PORT) {
+        console.error(chalk.red("Les variables d'environnement DATABASE_URL et PORT doivent être définies."));
+        process.exit(1);
+    }
+
+    return `FROM node:14-alpine
+ENV DATABASE_URL=${DATABASE_URL}
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE ${PORT}
+CMD [ "npm", "start" ]`;
 }
 
 runCLI();

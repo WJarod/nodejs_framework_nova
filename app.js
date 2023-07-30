@@ -24,14 +24,16 @@ app.get("/", (req, res) => {
 async function startServer() {
   try {
     // Génération des routes en utilisant les modèles définis
-    const routes = await gen_routes();
-    routes.forEach(({ name, route }) => {
-      app.use(`/${name}`, route);
-    });
-    
+    try {
+      const routes = await gen_routes();
+      routes.forEach((route) => {
+        app.use(`/${route.name}`, route.route);
+      });
+    } catch (err) {
+      log.error(`Error generating routes: ${err.message}`);
+    }
     // Connexion à la base de données MongoDB
     bd_connect();
-
     // Démarrage du serveur
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {

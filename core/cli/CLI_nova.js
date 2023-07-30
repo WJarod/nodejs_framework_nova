@@ -23,60 +23,56 @@ const usage = boxen(
     }
 );
 
+function executeCommand(command) {
+    const scriptPath = scripts[command];
+
+    if (!scriptPath) {
+        console.error(chalk.red(`Commande inconnue : ${command}.`));
+        process.exit(1);
+    }
+
+    const child = spawn("node", [scriptPath], { stdio: "inherit" });
+
+    child.on("close", (code) => {
+        if (code === 0) {
+            console.log(chalk.green(`La commande "${command}" s'est terminée avec succès.`));
+        } else {
+            console.error(chalk.red(`La commande "${command}" a échoué avec le code de sortie ${code}.`));
+        }
+        process.exit(code);
+    });
+}
+
 yargs(hideBin(process.argv))
     .usage(usage)
     .command(
         "start",
         "Start the server",
-        () => {
-            const child = spawn("node", [scripts.start], { stdio: "inherit" });
-
-            child.on("close", (code) => {
-                process.exit(code);
-            });
-        }
+        () => executeCommand("start")
     )
     .command(
         "init",
         "Initialize a new project",
-        () => {
-            const child = spawn("node", [scripts.init], { stdio: "inherit" });
-
-            child.on("close", (code) => {
-                process.exit(code);
-            });
-        }
+        () => executeCommand("init")
     )
     .command(
         "model",
         "Generate a new model",
-        () => {
-            const child = spawn("node", [scripts.model], { stdio: "inherit" });
-
-            child.on("close", (code) => {
-                process.exit(code);
-            });
-        }
+        () => executeCommand("model")
     )
     .command(
         "deploy",
         "Deploy the server",
-        () => {
-            const child = spawn("node", [scripts.deploy], { stdio: "inherit" });
-
-            child.on("close", (code) => {
-                process.exit(code);
-            });
-        }
+        () => executeCommand("deploy")
     )
-    .demandCommand(1, "")
+    .demandCommand(1, "Veuillez fournir une commande.")
     .help(
         "help",
-        "Show help"
+        "Afficher l'aide"
     )
     .version(
         "version",
-        "Show version number",
+        "Afficher le numéro de version",
         "0.0.1"
     )
     .argv;
