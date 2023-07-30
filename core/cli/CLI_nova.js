@@ -12,6 +12,7 @@ const scripts = {
     model: "./core/cli/CLI_model.js",
     deploy: "./core/cli/CLI_deploy.js",
     git: "./core/cli/CLI_git.js",
+    gen_test: "./core/cli/CLI_gen_test.js",
 };
 
 const usage = boxen(
@@ -71,6 +72,11 @@ yargs(hideBin(process.argv))
         "Execute git commands",
         () => executeCommand("git")
     )
+    .command(
+        "gen_test",
+        "Generer un fichier de test pour un modele",
+        () => executeCommand("gen_test")
+    ) 
     .demandCommand(1, "Veuillez fournir une commande.")
     .help(
         "help",

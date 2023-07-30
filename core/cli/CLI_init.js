@@ -60,6 +60,20 @@ async function runCLI() {
         const { port, databaseUrl } = await inquirer.prompt(questions);
 
         await createEnvFile(port, databaseUrl);
+
+        const message = chalk.bold("Initialisation du projet réussie !");
+
+        const boxenOptions = {
+            padding: 1,
+            margin: 1,
+            borderStyle: "round",
+            borderColor: "green",
+        };
+
+        const msgBox = boxen(message, boxenOptions);
+
+        console.log(msgBox);
+
     } catch (error) {
         console.error(`Error while running the init command : ${error}`);
     } finally {

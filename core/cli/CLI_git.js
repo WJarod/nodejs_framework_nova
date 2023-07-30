@@ -85,6 +85,19 @@ async function runCLI() {
             );
         }
 
+        const consoleMessage = chalk.bold("La commande git s'est terminée avec succès !");
+        
+        const boxenOptions = {
+            padding: 1,
+            margin: 1,
+            borderStyle: "round",
+            borderColor: "green",
+        };
+
+        const msgBox = boxen(consoleMessage, boxenOptions);
+
+        console.log(msgBox);
+
         process.exit(0);
     } catch (error) {
         console.error(
