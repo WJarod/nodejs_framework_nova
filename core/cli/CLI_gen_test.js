@@ -17,21 +17,6 @@ async function getExistingModels() {
     }
 }
 
-// Validation du nom du modèle
-function validateModelName(modelName) {
-    const validModelName = /^[a-zA-Z0-9_]+$/;
-    if (!validModelName.test(modelName)) {
-        return "Veuillez entrer un nom de modèle valide (caractères alphanumériques et underscores uniquement).";
-    }
-    return true;
-}
-
-// Fonction pour vérifier si un modèle existe déjà
-async function isModelExists(modelName) {
-    const existingModels = await getExistingModels();
-    return existingModels.includes(modelName);
-}
-
 // Fonction pour exécuter l'interface de ligne de commande
 async function runCLI() {
     try {
@@ -51,13 +36,37 @@ async function runCLI() {
         const testContent = `
 import { describe, it } from "mocha";
 import { expect } from "chai";
-import ${modelName} from "../models/${modelName}";
+import ${modelName} from "../models/${modelName}.js";
+import controller from "../controller/controller";
 
 describe("${modelName}", () => {
   it("should pass this placeholder test", () => {
     expect(true).to.be.true;
   });
+
+  describe("Controller", () => {
+    it("should create a new ${modelName}", async () => {
+      // Add your test logic here
+    });
+
+    it("should read an existing ${modelName}", async () => {
+      // Add your test logic here
+    });
+
+    it("should update an existing ${modelName}", async () => {
+      // Add your test logic here
+    });
+
+    it("should delete an existing ${modelName}", async () => {
+      // Add your test logic here
+    });
+  });
+
+  describe("Business Logic", () => {
+    // Add business logic tests here
+  });
 });
+
 `;
 
         // Vérifiez si le dossier de test existe, sinon créez-le
