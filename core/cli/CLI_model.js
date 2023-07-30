@@ -4,7 +4,6 @@ import fs from "fs/promises";
 import fsSync from "fs";
 import chalk from "chalk";
 import boxen from "boxen";
-import cliSelect from "cli-select";
 
 // Fonction pour obtenir les modèles existants
 async function getExistingModels() {

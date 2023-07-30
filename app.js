@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import gen_routes from "./core/app/APP_gen_routes.js";
 import errorHandler from "./core/app/handler/errorHandler.js";
-import succesHandler from "./core/app/handler/succesHandler.js";
 import log from "./core/app/log/logger.js";
 
 const app = express();
