@@ -104,3 +104,7 @@ User.businessLogic = {
   // Ajoutez d'autres méthodes spécifiques à User ici
 };
 ```
+
+## Licence
+
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
