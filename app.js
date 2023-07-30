@@ -1,10 +1,10 @@
 import express from "express";
 import cors from "cors";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import gen_routes from "./core/app/APP_gen_routes.js";
 import errorHandler from "./core/app/handler/errorHandler.js";
 import log from "./core/app/log/logger.js";
+import bd_connect from "./core/app/APP_bd_connect.js";
 
 const app = express();
 dotenv.config();
@@ -28,17 +28,12 @@ async function startServer() {
     routes.forEach(({ name, route }) => {
       app.use(`/${name}`, route);
     });
-
+    
     // Connexion à la base de données MongoDB
-    const PORT = process.env.PORT || 5000;
-    const DATABASE_URL =
-      process.env.DATABASE_URL || "mongodb://localhost:27017";
-    await mongoose.connect(DATABASE_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    bd_connect();
 
     // Démarrage du serveur
+    const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       log.info(`Serveur en cours d'exécution sur le port : ${PORT}`);
     });
