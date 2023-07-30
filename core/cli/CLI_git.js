@@ -47,7 +47,7 @@ async function runCLI() {
 
                 // Vérifier si on veut effectuer un git push
                 if (push) {
-                    const gitPush = spawn("git", ["push"], { stdio: "inherit" });
+                    const gitPush = spawn("git", ["push -u origin main"], { stdio: "inherit" });
                     gitPush.on("close", (code) => {
                         if (code === 0) {
                             console.log(chalk.green("Git push effectué avec succès."));
