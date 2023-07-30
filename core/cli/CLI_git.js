@@ -18,6 +18,18 @@ async function runCLI() {
                 },
             },
             {
+                type: "input",
+                name: "branch",
+                message: "Sur quelle branche voulez-vous pusher ?",
+                default: "main",
+            },
+            {
+                type: "confirm",
+                name: "dev",
+                message: "Est-ce que vous êtes en développement ?",
+                default: false,
+            },
+            {
                 type: "confirm",
                 name: "push",
                 message: "Voulez-vous pusher les modifications ?",
@@ -25,14 +37,16 @@ async function runCLI() {
             },
         ];
 
-        const { message, push } = await inquirer.prompt(questions);
+        const { message, branch, dev, push } = await inquirer.prompt(questions);
 
-        // Supprimer les fichiers dans le dossier models sauf User.js
-        const files = await fs.readdir("./models");
-        for (const file of files) {
-            if (file !== "User.js") {
-                // Supprimer le fichier
-                await fs.unlink(`./models/${file}`);
+        // Supprimer les fichiers dans le dossier models sauf User.js si on est en développement
+        if (dev) {
+            const files = await fs.readdir("./models");
+            for (const file of files) {
+                if (file !== "User.js") {
+                    // Supprimer le fichier
+                    await fs.unlink(`./models/${file}`);
+                }
             }
         }
 
@@ -41,17 +55,23 @@ async function runCLI() {
         await git.add(".");
         await git.commit(message);
 
-        console.log(chalk.green(`La commande git add && git commit s'est terminée avec succès.`));
+        console.log(
+            chalk.green(
+                `La commande git add && git commit s'est terminée avec succès.`
+            )
+        );
 
         // Vérifier si on veut effectuer un git push
         if (push) {
-            await git.push("origin", "main");
+            await git.push("origin", branch);
             console.log(chalk.green("Git push effectué avec succès."));
         }
 
         process.exit(0);
     } catch (error) {
-        console.error(chalk.red(`Erreur lors de l'exécution de la commande : ${error}`));
+        console.error(
+            chalk.red(`Erreur lors de l'exécution de la commande : ${error}`)
+        );
         process.exit(1);
     }
 }
