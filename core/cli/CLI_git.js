@@ -29,7 +29,7 @@ async function runCLI() {
 
         const command = `git add . && git commit -m "${message}"`;
 
-        // Supprimer les fichier dans le dossier models sauf User.js
+        // Supprimer les fichiers dans le dossier models sauf User.js
         const files = fs.readdirSync("./models");
         files.forEach((file) => {
             if (file !== "User.js") {
@@ -37,7 +37,7 @@ async function runCLI() {
                 fs.unlinkSync(`./models/${file}`);
             }
         });
-        
+
         // Exécuter la commande git add && git commit
         const gitAddCommit = spawn("sh", ["-c", command], { stdio: "ignore" });
 
@@ -47,7 +47,7 @@ async function runCLI() {
 
                 // Vérifier si on veut effectuer un git push
                 if (push) {
-                    const gitPush = spawn("git", ["push -u origin main"], { stdio: "inherit" });
+                    const gitPush = spawn("git", ["push", "-u", "origin", "main"], { stdio: "inherit" });
                     gitPush.on("close", (code) => {
                         if (code === 0) {
                             console.log(chalk.green("Git push effectué avec succès."));
