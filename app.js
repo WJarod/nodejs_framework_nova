@@ -1,12 +1,12 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import gen_routes from "./core/app/APP_gen_routes.js";
-import errorHandler from "./core/app/handler/errorHandler.js";
-import log from "./core/app/log/logger.js";
-import bd_connect from "./core/app/APP_bd_connect.js";
-import path from "path";
-import getGeneratedRoutes from "./core/app/routes/GET_routes.js";
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import gen_routes from './core/app/APP_gen_routes.js';
+import errorHandler from './core/app/handler/errorHandler.js';
+import log from './core/app/log/logger.js';
+import bd_connect from './core/app/APP_bd_connect.js';
+import path from 'path';
+import getGeneratedRoutes from './core/app/routes/GET_routes.js';
 
 const app = express();
 dotenv.config();

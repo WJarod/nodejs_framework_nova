@@ -1,7 +1,7 @@
 import log from '../log/logger.js';
 
 // Middleware pour la gestion des erreurs
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res) => {
   // Log the error details
   log.error(`Error: ${err.message}`);
   log.error(`Request URL: ${req.originalUrl}`);
