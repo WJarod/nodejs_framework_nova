@@ -12,7 +12,7 @@ const router = (model, model_name) => {
 
     // Routes personnalisées pour la logique métier
     if (model.businessLogic) {
-      for (const [value] of Object.entries(model.businessLogic)) {
+      for (const [key, value] of Object.entries(model.businessLogic)) {
         Router.route(value.route)[value.method](value.handler);
       }
     }
